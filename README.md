@@ -85,6 +85,7 @@ Activity中设置layout布局可以使用@PK方式在类上注入，类中视图
 实现IClassHandler、IMethodHandler或IFieldHandler接口可以对相应的Class、Method、Field进行处理
 当某些类需要进行特殊处理时，可以设置IHandleInterceptor拦截器，进行定制处理
 
+//=====================================================================================================
 
 观察者：
 在开发中，会出现这种情况，有多个地方要显示的数据都来源于一个数据模型，
@@ -150,3 +151,48 @@ Activity中设置layout布局可以使用@PK方式在类上注入，类中视图
         }.start();
 
 当在线程中更改数据时，数据更改的回调通知会在主线程调用，修改text的UI信息。
+
+//=====================================================================================================
+
+SharedPreferences：
+经常使用的SharedPreferences进行简单的持久化存储，这里为了提高开发效率，将动态代理也运用其中，
+ * 通过接口生成动态代理对象
+ * 接口的规则：
+ * 1. 接口上必须加注解SpName，标识SharedPreferences的名字
+ * 2. 方法中添加注解Key或Delete，Delete可不带
+ *      a. Key注解时，若方法带参数，则为保存该Key对应的值
+ *      b. 若不带，则为取出该Key对应的值
+ *      c. Delete注解时，若注解有值，则删除与此对应的value值
+ *      d. 若没值，则清除该SpName下的所有值
+ * 3. 代理类的生成：通过SpProxyFactory.getInstance().createProxy()方法生成对应的代理类，生成之后方法直接调用即可
+ 例：
+
+    @SpName("user")
+    public interface IUserDao {
+
+        String USERNAME = "username";
+        String PASSWORD = "password";
+
+        @Key(USERNAME)
+        void setUsername(String username);
+
+        @Key(USERNAME)
+        String getUsername();
+
+        @Delete(USERNAME)
+        void deleteUsername();
+
+        @Key(PASSWORD)
+        void setPassword(String password);
+
+        @Delete
+        void deleteAll();
+
+    }
+
+动态代理对象的生成是依靠SpProxyFactory的，下面是使用代码：
+
+    IUserDao dao = SpProxyFactory.getInstance().createProxy(IUserDao.class);
+    dao.setUsername("asdasdas");
+    text.setText(dao.getUsername());
+

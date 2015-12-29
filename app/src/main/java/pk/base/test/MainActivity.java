@@ -24,6 +24,7 @@ import pk.base.anno.handler.ClassHandler;
 import pk.base.anno.handler.FieldHandler;
 import pk.base.anno.handler.MethodHandler;
 import pk.base.base.BaseActivity;
+import pk.base.dao.SpProxyFactory;
 import pk.base.data.IDataProvider;
 import pk.base.util.ApplicationAccessor;
 import pk.base.util.ToastUtil;
@@ -49,11 +50,13 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    //测试注入接口
     public void button1() {
         data.setName(i++ + "");
         text.setText(data.getName());
     }
 
+    //测试DataProvider
     @Click(R.id.button2)
     public void button2() {
         final TestDataProvider test = TestDataProvider.instance();
@@ -71,6 +74,15 @@ public class MainActivity extends BaseActivity {
                 test.setData(t);
             }
         }.start();
+    }
+
+    //测试SharedPreferences代理
+    @Click(R.id.button3)
+    public void button3() {
+        IUserDao dao = SpProxyFactory.getInstance().createProxy(IUserDao.class);
+//        dao.setUsername("123456789");
+        text.setText(dao.getUsername());
+//        dao.deleteUsername();
     }
 
 
