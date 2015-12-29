@@ -188,6 +188,7 @@ SharedPreferences：
         @Delete
         void deleteAll();
     }
+    
 
 动态代理对象的生成是依靠SpProxyFactory的，下面是使用代码：
 
