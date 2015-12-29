@@ -1,4 +1,4 @@
-package pk.base;
+package pk.base.test;
 
 import android.app.Activity;
 import android.app.Application;
@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import pk.base.R;
 import pk.base.anno.AnnoHelper;
 import pk.base.anno.Impl;
 import pk.base.anno.Instance;
@@ -49,29 +50,7 @@ public class MainActivity extends BaseActivity {
     public void button1() {
         data.setName(i++ + "");
         text.setText(data.getName());
-
-        ToastUtil.show(data.getName());
     }
 
-    @Impl(Data.class)
-    public static interface IData {
-        void setName(String name);
-        String getName();
-    }
-
-    public static class Data implements IData {
-
-        String name;
-
-        @Override
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-    }
 
 }
