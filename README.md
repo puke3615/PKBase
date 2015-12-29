@@ -90,9 +90,9 @@ Activity中设置layout布局可以使用@PK方式在类上注入，类中视图
 观察者：
 在开发中，会出现这种情况，有多个地方要显示的数据都来源于一个数据模型，
 例如：用户名要在主页的某个Fragment中显示，还要在个人页面显示，详情页显示等等；
-还可能出现这种情况，在列表页显示的一条数据，去详情页进行修改后，再返回到列表页。一般的处理逻辑就是在列表页onResume或者onStart方法中再次请求数据；或者通过startActivityForResult + onActivityResult方式进行修改后的数据回传；
+还可能出现这种情况，在列表页显示的一条数据，去详情页进行修改后，再返回到列表页数据与实际的数据不一致。一般的处理逻辑就是在列表页onResume或者onStart方法中再次请求数据；或者通过startActivityForResult + onActivityResult方式进行修改后的数据回传；
 又或者是，在在列表页注册一个广播，然后每当数据改变时，发送一条数据改变的广播，通知列表页更改UI。
-粗略看一下以上的几种方法，实现起来并不困难，只是会增加很多开发成本，使得代码量臃肿不堪。
+粗略看一下以上的几种方法，实现起来并不困难，只是会增加很多开发时间，而且还会让代码量臃肿不堪。
 对于UI能与数据保持一致，可以尝试使用观察者模式，这里只需要定义好自己的Model数据后，创建与之对应的DataProvider就行了
 例：
 创建数据模型Test
@@ -167,9 +167,9 @@ SharedPreferences：
  * 3. 代理类的生成：通过SpProxyFactory.getInstance().createProxy()方法生成对应的代理类，生成之后方法直接调用即可
  例：
 
+
     @SpName("user")
     public interface IUserDao {
-
         String USERNAME = "username";
         String PASSWORD = "password";
 
@@ -187,7 +187,6 @@ SharedPreferences：
 
         @Delete
         void deleteAll();
-
     }
 
 动态代理对象的生成是依靠SpProxyFactory的，下面是使用代码：
