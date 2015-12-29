@@ -12,13 +12,19 @@
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:text="测试文本"
+        android:text="测试接口注入"
         android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/button1"
         android:layout_width="match_parent"
         android:text="测试按钮"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:text="测试DataProvider"
         android:layout_height="wrap_content"/>
 
 

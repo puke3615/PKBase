@@ -85,3 +85,68 @@ Activity中设置layout布局可以使用@PK方式在类上注入，类中视图
 实现IClassHandler、IMethodHandler或IFieldHandler接口可以对相应的Class、Method、Field进行处理
 当某些类需要进行特殊处理时，可以设置IHandleInterceptor拦截器，进行定制处理
 
+
+观察者：
+在开发中，会出现这种情况，有多个地方要显示的数据都来源于一个数据模型，
+例如：用户名要在主页的某个Fragment中显示，还要在个人页面显示，详情页显示等等；
+还可能出现这种情况，在列表页显示的一条数据，去详情页进行修改后，再返回到列表页。一般的处理逻辑就是在列表页onResume或者onStart方法中再次请求数据；或者通过startActivityForResult + onActivityResult方式进行修改后的数据回传；
+又或者是，在在列表页注册一个广播，然后每当数据改变时，发送一条数据改变的广播，通知列表页更改UI。
+粗略看一下以上的几种方法，实现起来并不困难，只是会增加很多开发成本，使得代码量臃肿不堪。
+对于UI能与数据保持一致，可以尝试使用观察者模式，这里只需要定义好自己的Model数据后，创建与之对应的DataProvider就行了
+例：
+创建数据模型Test
+
+    class Test {
+        String name;
+
+        @Override
+        public String toString() {
+            return "Test{" +
+                    "name='" + name + '\'' +
+                    '}';
+        }
+    }
+
+然后创建对应的数据提供者
+
+    public class TestDataProvider extends DataProvider<Test> {
+
+        private static final byte[] mLock = new byte[0];
+        private static TestDataProvider mInstance;
+
+        private TestDataProvider() {
+        }
+
+        public static TestDataProvider instance() {
+            if (mInstance == null) {
+                synchronized (mLock) {
+                    if (mInstance == null) {
+                        mInstance = new TestDataProvider();
+                    }
+                }
+            }
+            return mInstance;
+        }
+
+    }
+
+这里注意要保证这里的数据模型必须是基于该数据对应的观察者上是唯一的（即要保证data的在观察者范围类的唯一性），这里采取的策略是使用单例。
+接下来测试一下
+
+        final TestDataProvider test = TestDataProvider.instance();
+        test.registerDataListener(new IDataProvider.IDataListener<Test>() {
+            @Override
+            public void onChange(Test data) {
+                text.setText(data.toString());
+            }
+        });
+        new Thread(){
+            @Override
+            public void run() {
+                Test t = new Test();
+                t.name = "线程中做出改变";
+                test.setData(t);
+            }
+        }.start();
+
+当在线程中更改数据时，数据更改的回调通知会在主线程调用，修改text的UI信息。
