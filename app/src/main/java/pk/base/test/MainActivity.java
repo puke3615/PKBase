@@ -1,33 +1,15 @@
 package pk.base.test;
 
-import android.app.Activity;
-import android.app.Application;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
 import pk.base.R;
-import pk.base.anno.AnnoHelper;
 import pk.base.anno.Click;
-import pk.base.anno.Impl;
 import pk.base.anno.Instance;
 import pk.base.anno.PK;
-import pk.base.anno.handler.AnnoHandler;
-import pk.base.anno.handler.ClassHandler;
-import pk.base.anno.handler.FieldHandler;
-import pk.base.anno.handler.MethodHandler;
 import pk.base.base.BaseActivity;
 import pk.base.dao.SpProxyFactory;
 import pk.base.data.IDataProvider;
-import pk.base.util.ApplicationAccessor;
-import pk.base.util.ToastUtil;
 
 @PK(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
