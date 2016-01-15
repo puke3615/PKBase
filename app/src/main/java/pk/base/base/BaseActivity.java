@@ -1,6 +1,7 @@
 package pk.base.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -16,10 +17,13 @@ import pk.base.anno.AnnoHelper;
  */
 public abstract class BaseActivity extends Activity {
 
+    protected Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mContext = this;
         setContentView();
         init();
         initListener();

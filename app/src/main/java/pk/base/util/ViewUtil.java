@@ -23,6 +23,8 @@ public class ViewUtil {
             context = (Context) obj;
         } else if (obj instanceof ViewGroup) {
             context = ((ViewGroup) obj).getContext();
+        } else if (obj instanceof View) {
+            context = ((View) obj).getContext();
         }
         return context;
     }

@@ -1,6 +1,5 @@
 package pk.base.anno.handler;
 
-import android.os.Bundle;
 import android.view.View;
 
 import java.lang.reflect.Field;
