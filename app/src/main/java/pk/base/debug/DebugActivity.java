@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import pk.base.base.BaseActivity;
@@ -29,6 +30,7 @@ public abstract class DebugActivity extends BaseActivity {
         ScrollView scroll = new ScrollView(this);
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
+        onLayoutCreate(layout);
         scroll.addView(layout, mm);
 
         List<Item> items = getItems(new Item.Builder()).items;
@@ -52,6 +54,10 @@ public abstract class DebugActivity extends BaseActivity {
         }
 
         setContentView(scroll, mm);
+    }
+
+    protected void onLayoutCreate(LinearLayout layout) {
+
     }
 
     @Override
@@ -83,9 +89,9 @@ public abstract class DebugActivity extends BaseActivity {
         public static class Builder {
             private List<Item> items = new ArrayList<>();
 
-            public Builder add(Item item) {
-                if (item != null) {
-                    items.add(item);
+            public Builder add(Item... items) {
+                if (items != null) {
+                    this.items.addAll(Arrays.asList(items));
                 }
                 return this;
             }
