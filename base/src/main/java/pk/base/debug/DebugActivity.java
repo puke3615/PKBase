@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import pk.base.anno.handler.AnnoHandler;
 import pk.base.base.BaseActivity;
 import pk.base.util.ToastUtil;
 
@@ -48,8 +49,9 @@ public abstract class DebugActivity extends BaseActivity {
         onLayoutCreate(layout);
         scroll.addView(layout, mm);
 
-        List<Item> items = getItems(new Item.Builder()).items;
-        if (items != null && items.size() > 0) {
+        Item.Builder builder = getItems(new Item.Builder());
+        List<Item> items;
+        if (builder != null && (items = builder.items) != null && items.size() > 0) {
             for (final Item item : items) {
                 addView(item);
             }
