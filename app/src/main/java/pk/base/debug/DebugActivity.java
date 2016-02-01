@@ -8,11 +8,18 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import pk.base.base.BaseActivity;
+import pk.base.util.ToastUtil;
 
 /**
  * @author zijiao
@@ -21,14 +28,22 @@ import pk.base.base.BaseActivity;
  */
 public abstract class DebugActivity extends BaseActivity {
 
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.METHOD})
+    public static @interface Debug {
+    }
+
+    protected LinearLayout layout;
+    private ViewGroup.LayoutParams mw, mm;
+
     @Override
     protected void setContentView() {
         final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
         final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
-        ViewGroup.LayoutParams mm = new ViewGroup.LayoutParams(MP, MP);
-        ViewGroup.LayoutParams mw = new ViewGroup.LayoutParams(MP, WC);
+        mm = new ViewGroup.LayoutParams(MP, MP);
+        mw = new ViewGroup.LayoutParams(MP, WC);
         ScrollView scroll = new ScrollView(this);
-        LinearLayout layout = new LinearLayout(this);
+        layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         onLayoutCreate(layout);
         scroll.addView(layout, mm);
@@ -36,24 +51,54 @@ public abstract class DebugActivity extends BaseActivity {
         List<Item> items = getItems(new Item.Builder()).items;
         if (items != null && items.size() > 0) {
             for (final Item item : items) {
-                if (item == null) {
-                    break;
-                }
-                Button button = new Button(this);
-                button.setText(item.name);
-                button.setOnClickListener(item.listener == null ? new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (item.target != null && Activity.class.isAssignableFrom(item.target)) {
-                            startActivity(new Intent(DebugActivity.this, item.target));
-                        }
+                addView(item);
+            }
+        } else {
+            try {
+                Method[] methods = getClass().getMethods();
+                for (final Method method : methods) {
+                    if (method.isAnnotationPresent(Debug.class)) {
+                        method.setAccessible(true);
+                        Item item = new Item(method.getName(), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    method.invoke(mContext);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        addView(item);
                     }
-                } : item.listener);
-                layout.addView(button, mw);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
         setContentView(scroll, mm);
+    }
+
+    public static void T(Object s) {
+        ToastUtil.show(s);
+    }
+
+    private void addView(final Item item) {
+        if (item == null) {
+            return;
+        }
+        Button button = new Button(this);
+        button.setText(item.name);
+        button.setOnClickListener(item.listener == null ? new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (item.target != null && Activity.class.isAssignableFrom(item.target)) {
+                    startActivity(new Intent(DebugActivity.this, item.target));
+                }
+            }
+        } : item.listener);
+        layout.addView(button, mw);
     }
 
     protected void onLayoutCreate(LinearLayout layout) {
@@ -68,7 +113,9 @@ public abstract class DebugActivity extends BaseActivity {
     protected void initListener() {
     }
 
-    protected abstract Item.Builder getItems(Item.Builder builder);
+    protected Item.Builder getItems(Item.Builder builder) {
+        return null;
+    }
 
     public static class Item {
         public String name;
