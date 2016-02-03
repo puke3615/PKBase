@@ -2,6 +2,7 @@ package pk.base.debug;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,13 +13,11 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import pk.base.anno.handler.AnnoHandler;
 import pk.base.base.BaseActivity;
 import pk.base.util.ToastUtil;
 
@@ -33,6 +32,8 @@ public abstract class DebugActivity extends BaseActivity {
     @Target({ElementType.METHOD})
     public static @interface Debug {
     }
+
+    private final String TAG = getClass().getName();
 
     protected LinearLayout layout;
     private ViewGroup.LayoutParams mw, mm;
@@ -86,6 +87,10 @@ public abstract class DebugActivity extends BaseActivity {
         ToastUtil.show(s);
     }
 
+    public static void T(String format, Object... values) {
+        T(String.format(format, values));
+    }
+
     private void addView(final Item item) {
         if (item == null) {
             return;
@@ -117,6 +122,10 @@ public abstract class DebugActivity extends BaseActivity {
 
     protected Item.Builder getItems(Item.Builder builder) {
         return null;
+    }
+
+    public void L(Object s) {
+        Log.i(TAG, s + "");
     }
 
     public static class Item {
