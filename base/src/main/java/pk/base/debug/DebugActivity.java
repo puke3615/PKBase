@@ -83,14 +83,6 @@ public abstract class DebugActivity extends BaseActivity {
         setContentView(scroll, mm);
     }
 
-    public static void T(Object s) {
-        ToastUtil.show(s);
-    }
-
-    public static void T(String format, Object... values) {
-        T(String.format(format, values));
-    }
-
     private void addView(final Item item) {
         if (item == null) {
             return;
