@@ -26,11 +26,6 @@ public class DefaultContextImpl implements PKContext {
     }
 
     @Override
-    public PKProgress getPKProgress() {
-        return mPKProgress;
-    }
-
-    @Override
     public void setPKProgress(PKProgress pkProgress) {
         this.mPKProgress = pkProgress;
     }
