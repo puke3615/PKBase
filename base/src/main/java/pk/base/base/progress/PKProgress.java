@@ -9,7 +9,7 @@ public interface PKProgress {
 
     /**
      * 显示进度条
-     * @param message 显示的内容
+     * @param message 显示的信息
      */
     void showProgressDialog(String message);
 
