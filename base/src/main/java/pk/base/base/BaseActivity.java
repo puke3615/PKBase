@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
-import pk.base.Exceptions;
+import pk.base.base.context.DefaultContextImpl;
+import pk.base.base.context.PKContext;
+import pk.base.base.progress.PKProgress;
+import pk.base.exception.Exceptions;
 import pk.base.anno.AnnoHelper;
 
 /**
@@ -15,15 +18,17 @@ import pk.base.anno.AnnoHelper;
  * @version 2015/12/29
  * @Mark
  */
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends Activity implements PKContext {
 
     protected Context mContext;
+    private PKContext mPKContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         mContext = this;
+        mPKContext = new DefaultContextImpl(this);
         setContentView();
         init();
         initListener();
@@ -38,22 +43,38 @@ public abstract class BaseActivity extends Activity {
     protected abstract void initListener();
 
 
-    public static boolean isEmpty(Object... objs) {
-        for (Object obj : objs) {
-            if (obj == null) {
-                return true;
-            } else if (obj instanceof String && ((String) obj).length() == 0) {
-                return true;
-            }
-        }
-        return false;
+    @Override
+    public PKProgress getPKProgress() {
+        return mPKContext.getPKProgress();
     }
 
-    public static String getStr(TextView text) {
-        if (text == null) {
-            Exceptions.n("text == null");
-        }
-        return text.getText().toString().trim();
+    @Override
+    public void setPKProgress(PKProgress pkProgress) {
+        mPKContext.setPKProgress(pkProgress);
     }
 
+    @Override
+    public void T(Object s) {
+        mPKContext.T(s);
+    }
+
+    @Override
+    public void showProgressDialog(String message) {
+        mPKContext.showProgressDialog(message);
+    }
+
+    @Override
+    public void showProgressDialog() {
+        mPKContext.showProgressDialog();
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        mPKContext.dismissProgressDialog();
+    }
+
+    @Override
+    public boolean isProgressShowing() {
+        return mPKContext.isProgressShowing();
+    }
 }

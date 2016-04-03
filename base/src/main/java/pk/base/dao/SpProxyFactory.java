@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import pk.base.Exceptions;
+import pk.base.exception.Exceptions;
 import pk.base.util.ApplicationAccessor;
 
 /**

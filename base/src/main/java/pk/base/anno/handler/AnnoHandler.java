@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import pk.base.Exceptions;
+import pk.base.exception.Exceptions;
 
 /**
  * @author zijiao

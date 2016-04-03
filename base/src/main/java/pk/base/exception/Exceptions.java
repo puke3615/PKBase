@@ -1,4 +1,4 @@
-package pk.base;
+package pk.base.exception;
 
 /**
  * @author zijiao
@@ -9,6 +9,7 @@ public class Exceptions {
 
     /**
      * 非法参数
+     *
      * @param obj
      */
     public static void i(Object obj) {
@@ -17,6 +18,7 @@ public class Exceptions {
 
     /**
      * 空指针
+     *
      * @param obj
      */
     public static void n(Object obj) {
@@ -25,10 +27,19 @@ public class Exceptions {
 
     /**
      * 运行时错误
+     *
      * @param obj
      */
     public static void r(Object obj) {
         throw new RuntimeException(String.valueOf(obj));
+    }
+
+    public static void checkNull(Object... objects) {
+        for (Object obj : objects) {
+            if (obj == null) {
+                throw new NullPointerException();
+            }
+        }
     }
 
 }
