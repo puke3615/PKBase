@@ -55,6 +55,16 @@ public abstract class BaseActivity extends Activity implements PKContext {
     }
 
     @Override
+    public boolean isEmpty(Object... s) {
+        return mPKContext.isEmpty(s);
+    }
+
+    @Override
+    public String getStr(TextView textView) {
+        return mPKContext.getStr(textView);
+    }
+
+    @Override
     public void showProgressDialog(String message) {
         mPKContext.showProgressDialog(message);
     }

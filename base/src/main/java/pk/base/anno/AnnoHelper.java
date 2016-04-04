@@ -47,4 +47,8 @@ public class AnnoHelper {
         return view;
     }
 
+    public void setFieldHandler(FieldHandler handler) {
+        mHandler.setFieldHandler(handler);
+    }
+
 }

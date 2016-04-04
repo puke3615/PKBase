@@ -88,6 +88,10 @@ public class AnnoHandler {
         return cls.getDeclaredFields();
     }
 
+    public void setFieldHandler(FieldHandler handler) {
+        this.mFieldHandler = handler;
+    }
+
     public static class Builder {
         private IClassHandler mClassHandler;
         private IMethodHandler mMethodHandler;
@@ -127,26 +131,25 @@ public class AnnoHandler {
     /**
      * 注解的类处理器
      */
-    public static interface IClassHandler {
+    public interface IClassHandler {
         View handleClass(Object obj, View view, Class<?> cls);
     }
 
     /**
      * 注解的方法处理器
      */
-    public static interface IMethodHandler {
+    public interface IMethodHandler {
         void handleMethod(Object obj, View view, Method method);
     }
 
     /**
      * 注解的属性处理器
      */
-    public static interface IFieldHandler {
-
+    public interface IFieldHandler {
         void handleField(Object obj, View view, Field field);
     }
 
-    public static interface IHandleInterceptor {
+    public interface IHandleInterceptor {
         boolean doInterfactor(Object obj, View view, Object handleTarget);
     }
 
