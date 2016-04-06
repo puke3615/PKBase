@@ -13,7 +13,7 @@ import pk.base.anno.handler.MethodHandler;
  * @version 2015/12/29
  * @Mark
  */
-public class AnnoHelper {
+public class AnnoHelper implements IAnnoHandler {
 
     private static final byte[] mLock = new byte[0];
     private static AnnoHelper mInstance;

@@ -7,12 +7,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import pk.base.anno.AnnoHelper;
+import pk.base.anno.IAnnoHandler;
 import pk.base.base.context.DefaultContextImpl;
 import pk.base.base.context.PKContext;
 import pk.base.base.progress.PKProgress;
-import pk.base.exception.Exceptions;
-import pk.base.anno.AnnoHelper;
-import pk.base.util.ToastUtil;
 
 /**
  * @author zijiao
@@ -29,20 +28,35 @@ public abstract class BaseActivity extends Activity implements PKContext {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         mContext = this;
-        mPKContext = new DefaultContextImpl(this);
+        mPKContext = getContextImpl();
+        if (mPKContext == null) {
+            mPKContext = new DefaultContextImpl(this);
+        }
         setContentView();
         init();
         initListener();
     }
 
+    protected PKContext getContextImpl() {
+        return null;
+    }
+
     protected void setContentView() {
-        View view = AnnoHelper.instance().handle(this);
+        IAnnoHandler handler = getAnnoHandler();
+        if (handler == null) {
+            handler = AnnoHelper.instance();
+        }
+        View view = handler.handle(this);
         setContentView(view);
     }
 
     protected abstract void init();
     protected abstract void initListener();
 
+
+    protected IAnnoHandler getAnnoHandler() {
+        return null;
+    }
 
     @Override
     public void setPKProgress(PKProgress pkProgress) {
