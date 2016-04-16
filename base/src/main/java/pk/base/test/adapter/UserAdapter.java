@@ -20,5 +20,7 @@ public class UserAdapter extends PKAdapter<User, UserHolder> {
         holder.name.setText(data.name);
         holder.age.setText(String.valueOf(data.age));
         holder.sex.setText(data.sex);
+
+
     }
 }

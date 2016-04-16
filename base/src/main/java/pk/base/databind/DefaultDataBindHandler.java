@@ -89,6 +89,7 @@ public class DefaultDataBindHandler<H, D> implements IDataBindHandler<H, D> {
                 textView.setText(data == null ? null : String.valueOf(data));
             } else if (view instanceof ImageView) {
                 //待实现
+
             }
         }
     }

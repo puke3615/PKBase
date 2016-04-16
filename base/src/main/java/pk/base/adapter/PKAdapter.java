@@ -15,7 +15,7 @@ import java.util.List;
  */
 public abstract class PKAdapter<T, H extends PKHolder> extends PKAbstractAdapter<T> {
 
-    private Class mHolderClass;
+    private Class<H> mHolderClass;
 
     public PKAdapter(Context context) {
         super(context);
