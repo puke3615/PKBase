@@ -16,7 +16,7 @@ public abstract class DataProvider<T> implements IDataProvider<T> {
 
     private T mData;
     private final List<IDataListener<T>> mWatchers = new ArrayList<>();
-    private static final Handler mHandler = new Handler(Looper.getMainLooper());
+    private static final Handler sHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public synchronized void setData(T data) {
@@ -28,7 +28,7 @@ public abstract class DataProvider<T> implements IDataProvider<T> {
 
     @Override
     public void notifyChange() {
-        mHandler.post(new Runnable() {
+        sHandler.post(new Runnable() {
             @Override
             public void run() {
                 synchronized (mWatchers) {

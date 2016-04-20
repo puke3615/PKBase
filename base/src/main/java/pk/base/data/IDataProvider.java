@@ -19,7 +19,7 @@ public interface IDataProvider<T> {
 
     void notifyChange();
 
-    public static interface IDataListener<T> {
+    interface IDataListener<T> {
 
         void onChange(T data);
 
