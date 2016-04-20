@@ -1,6 +1,7 @@
 package pk.base.test;
 
 import pk.base.data.DataProvider;
+import pk.base.data.ICopy;
 
 /**
  * @author zijiao
@@ -28,13 +29,22 @@ public class TestDataProvider extends DataProvider<Test> {
 
 }
 
-class Test {
+class Test implements ICopy<Test> {
     String name;
+
+    public Test(String name) {
+        this.name = name;
+    }
 
     @Override
     public String toString() {
         return "Test{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public Test copy() {
+        return new Test(name);
     }
 }

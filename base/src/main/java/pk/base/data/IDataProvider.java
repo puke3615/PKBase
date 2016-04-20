@@ -5,7 +5,7 @@ package pk.base.data;
  * @version 2015/12/28
  * @Mark
  */
-public interface IDataProvider<T> {
+public interface IDataProvider<T extends ICopy<T>> {
 
     void setData(T data);
 

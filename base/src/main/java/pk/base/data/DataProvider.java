@@ -12,7 +12,7 @@ import java.util.List;
  * @version 2015/12/28
  * @Mark 数据模型，存储Model，每当数据改变时，会触发分发事件。向所有的该数据的观察者通知
  */
-public abstract class DataProvider<T> implements IDataProvider<T> {
+public abstract class DataProvider<T extends ICopy<T>> implements IDataProvider<T> {
 
     private T mData;
     private final List<IDataListener<T>> mWatchers = new ArrayList<>();
@@ -20,10 +20,8 @@ public abstract class DataProvider<T> implements IDataProvider<T> {
 
     @Override
     public synchronized void setData(T data) {
-        if (mData != data) {
-            this.mData = data;
-            notifyChange();
-        }
+        this.mData = data;
+        notifyChange();
     }
 
     @Override
@@ -34,7 +32,11 @@ public abstract class DataProvider<T> implements IDataProvider<T> {
                 synchronized (mWatchers) {
                     for (IDataListener<T> listener : mWatchers) {
                         if (listener != null) {
-                            listener.onChange(mData);
+                            try {
+                                listener.onChange(mData);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
