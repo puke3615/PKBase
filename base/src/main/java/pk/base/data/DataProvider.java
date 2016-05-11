@@ -26,23 +26,27 @@ public abstract class DataProvider<T extends ICopy<T>> implements IDataProvider<
 
     @Override
     public void notifyChange() {
-        sHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (mWatchers) {
-                    for (IDataListener<T> listener : mWatchers) {
-                        if (listener != null) {
-                            try {
-                                listener.onChange(mData);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+
+        synchronized (mWatchers) {
+            Looper looper = Looper.myLooper();
+            Handler handler = looper == null ? sHandler : new WeakHandler(looper, null);
+            for (final IDataListener<T> listener : mWatchers) {
+                if (listener == null) {
+                    continue;
+                }
+                try {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onChange(mData);
                         }
-                    }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
             }
-        });
+        }
     }
 
     @Override
