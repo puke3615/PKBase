@@ -43,7 +43,7 @@ public class SpProxyFactory {
     }
 
     public final <T> T createProxy(Class<T> cls) {
-        if (cls == null && !cls.isInterface()) {
+        if (cls == null || !cls.isInterface()) {
             Exceptions.r("传入的类型为null或者不是接口");
         }
 
