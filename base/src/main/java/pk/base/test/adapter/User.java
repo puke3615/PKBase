@@ -7,6 +7,7 @@ package pk.base.test.adapter;
  */
 public class User {
 
+    public String userId;
     public String name;
     public int age;
     public String sex;
